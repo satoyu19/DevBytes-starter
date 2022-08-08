@@ -16,8 +16,39 @@
 
 package com.example.android.devbyteviewer.database
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.android.devbyteviewer.domain.DevByteVideo
+
 
 /**
  * Database entities go in this file. These are responsible for reading and writing from the
  * database.
  */
+
+@Entity
+data class DatabaseVideo(
+    @PrimaryKey
+    val url: String,    //urlは常にユニークな物
+    val updated: String,
+    val title: String,
+    val description: String,
+    val thumbnail: String
+)
+
+    //Listの拡張関数,DatabaseVideoオブジェクトをdomainオブジェクトに変換する
+fun List<DatabaseVideo>.asDomainModel(): List<DevByteVideo>{
+    //public inline fun <T, R> Iterable<T>.map(transform: (T) -> R): List<R> {
+    //    return mapTo(ArrayList<R>(collectionSizeOrDefault(10)), transform)
+    //}
+        //NOTE: List<DatabaseVideo>を一つずつ変換している？
+    return map {
+        DevByteVideo(
+            url = it.url,
+            title = it.title,
+            description = it.description,
+            updated = it.updated ,
+            thumbnail = it.thumbnail
+        )
+    }
+}

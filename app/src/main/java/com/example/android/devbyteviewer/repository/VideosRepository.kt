@@ -15,3 +15,33 @@
  */
 
 package com.example.android.devbyteviewer.repository
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.example.android.devbyteviewer.database.VideosDatabase
+import com.example.android.devbyteviewer.database.asDomainModel
+import com.example.android.devbyteviewer.domain.DevByteVideo
+import com.example.android.devbyteviewer.network.DevByteNetwork
+import com.example.android.devbyteviewer.network.asDatabaseModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
+
+//オフラインキャッシュを管理するためのレポジトリ、ネットワークリザルトを読み取り、データベースを最新の状態にキープするためのロジックを持つ
+class VideosRepository(private val database: VideosDatabase){
+
+    //DatabaseVideo型をasDomainModel()メソッドを利用してDevByteVideo型に変換
+    val videos: LiveData<List<DevByteVideo>> = Transformations.map(database.videoDao.getVideos()){
+        it.asDomainModel()
+    }
+
+    //オフラインキャッシュをリフレッシュするために使われるAPI、データベース操作を行いため、コルーチンで呼び出せるようにsuspend関数にする
+    suspend fun refreshVideos(){
+        withContext(Dispatchers.IO){
+            Timber.d("refresh videos is called")
+            val playlist = DevByteNetwork.devbytes.getPlaylist()
+            //asDomainModelでデータベースオブジェクトにマッピングする。
+            database.videoDao.insertAll(playlist.asDatabaseModel())
+        }
+    }
+}
