@@ -28,3 +28,24 @@
 
 ![image](https://user-images.githubusercontent.com/96398365/183078096-9f259ad8-5988-430b-a1de-b63c8eb45e8d.png)
 
+データベースのリフレッシュ
+--------------
+
+・データベースのリフレッシュとはローカルデータベースとネットワークからのデータを常に同期させるために更新したりリフレッシュしたりするプロセスのことです。このアプリでは、とてもシンプルなリフレッシュ手法を使います。レポジトリーからデータをリクエストするモジュールでローカルデータのリフレッシュを行います。この手法はもっと複雑なものがある。例えば、バックグラウンドで自動でデータをリフレッシュさせたり、ユーザーが次に使う可能性が高いデータをキャッシュさせたりなど。
+
+WorkManager
+--------------
+
+WorkManagerはAndroidアーキテクチャコンポーネントの一つであり、Android Jetpackの一部です。WorkManagerは延期可能かつ実行の保証が要求されるバックグラウンド作業用に使われます。<br>
+
+参考URL：https://developer.android.com/topic/libraries/architecture/workmanager<br>
+        https://developer.android.com/jetpack/androidx/releases/work<br>
+
+  ・延期可能とは、その作業が即座に実行される必要がないということを意味しています。例として、バックグラウンドで分析データをサーバーに送ったり、データベースと同期するといったものは延期可能な作業と言えます。<br>
+  ・実行が保障されるとは、アプリが終了したり、端末が再起動してもタスクが実行されるということを意味しています。<br>
+
+WorkManagerがバックグラウンド作業を実行している間は、互換性の問題や、バッテリーおよびシステムの健全性のベストプラクティスに則ることにもなります。WorkManagerはAPI14までの下位互換性を持っています。WorkManagerは端末のAPIレベルに応じて、バックグラウンドタスクの最適なスケジューリング方法を選択します。（API23以上の場合）JobSchedulerや、AlarmManagerとBroadcastReceiverの組み合わせを使う場合もあります。<br>
+![image](https://user-images.githubusercontent.com/96398365/183336207-9c7fb595-c739-4c33-95bc-716b1a5f2dd2.png)
+
+またWorkManagerではバックグラウンドタスクが動作するときの基準を設定できます。例えば、バッテリー状態やネットワーク状態、充電状態が特定の基準を満たしたときにのみ、あるタスクを実行させたいときなどです。制約の設定方法↓<br>
+参考URL：https://developer.android.com/topic/libraries/architecture/workmanager/how-to/define-work#work-constraints
