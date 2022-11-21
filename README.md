@@ -48,4 +48,5 @@ WorkManagerがバックグラウンド作業を実行している間は、互換
 ![image](https://user-images.githubusercontent.com/96398365/183336207-9c7fb595-c739-4c33-95bc-716b1a5f2dd2.png)
 
 またWorkManagerではバックグラウンドタスクが動作するときの基準を設定できます。例えば、バッテリー状態やネットワーク状態、充電状態が特定の基準を満たしたときにのみ、あるタスクを実行させたいときなどです。制約の設定方法↓<br>
-参考URL：https://developer.android.com/topic/libraries/architecture/workmanager/how-to/define-work#work-constraints
+参考URL：https://developer.android.com/topic/libraries/architecture/workmanager/how-to/define-work#work-constraints<br>
+データレイヤー：https://developer.android.com/jetpack/guide?hl=ja#data-layer
